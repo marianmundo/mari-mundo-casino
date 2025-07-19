@@ -4,25 +4,103 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MARIAN MUNDO CASINO</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: url('https://i.imgur.com/kBrqrxZ.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: white;
+      margin: 0;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 2.5em;
+      color: #00cfff;
+      text-shadow: 0 0 10px #00cfff;
+    }
+
+    #codigo {
+      padding: 10px;
+      font-size: 1em;
+      margin-top: 20px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    #botonTirar {
+      margin-top: 20px;
+      padding: 20px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: #00cfff;
+      color: white;
+      font-size: 1.2em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px #00cfff;
+    }
+
+    #resultado {
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+
+    #frase {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #ffffff;
+      text-shadow: 0 0 5px #00cfff;
+    }
+  </style>
 </head>
 <body>
-  <div class="contenedor">
-    <h1>MARIAN MUNDO CASINO</h1>
+  <h1>MARIAN MUNDO CASINO</h1>
+  <input type="text" id="codigo" placeholder="Ingresá tu código" />
+  <br />
+  <button id="botonTirar" onclick="tirar()">Girar</button>
+  <div id="resultado"></div>
+  <div id="frase">🎲 Girá la rueda y fijate si tenés premio 🎉</div>
 
-    <input type="text" id="codigo" placeholder="Ingresá tu código" />
-    
-    <button id="botonTirar" onclick="tirar()">🎰 GIRAR</button>
-    
-    <p id="texto-abajo">Girá la rueda y fijate si tenés premio 🎁</p>
+  <script>
+    function tirar() {
+      const codigoIngresado = document.getElementById("codigo").value.trim().toUpperCase();
+      const resultado = document.getElementById("resultado");
+      const boton = document.getElementById("botonTirar");
 
-    <p id="resultado"></p>
+      if (!codigoIngresado) {
+        resultado.style.color = "orange";
+        resultado.innerHTML = "⚠️ Ingresá un código.";
+        return;
+      }
 
-    <p id="linea">Línea directa 24 hs: 1161164088</p>
-    <p id="premios-restantes">PREMIOS RESTANTES: 71</p>
-    <p class="emojis">😎💅🏻</p>
-  </div>
-
-  <script src="script.js"></script>
+      fetch('/api/verificar-codigo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codigo: codigoIngresado })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.estado === "usado") {
+          resultado.style.color = "#ffcc00";
+          resultado.innerHTML = "🚫 Este código ya fue utilizado.";
+        } else if (data.estado === "valido") {
+          boton.style.display = "none";
+          resultado.style.color = "#00ff00";
+          resultado.innerHTML = "✅ " + data.mensaje;
+        } else {
+          resultado.style.color = "#ff3333";
+          resultado.innerHTML = "❌ Código inválido. Probá con otro.";
+        }
+      })
+      .catch(error => {
+        console.error("Error al verificar el código:", error);
+        resultado.style.color = "red";
+        resultado.innerHTML = "❌ Error del servidor. Intentá de nuevo.";
+      });
+    }
+  </script>
 </body>
 </html>
