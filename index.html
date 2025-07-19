@@ -2,10 +2,27 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Mari Mundo Casino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MARIAN MUNDO CASINO</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>¡Bienvenida a Mari Mundo Casino!</h1>
-  <p>Próximamente tu ruleta en línea estará disponible aquí 🎰</p>
+  <div class="contenedor">
+    <h1>MARIAN MUNDO CASINO</h1>
+
+    <input type="text" id="codigo" placeholder="Ingresá tu código" />
+    
+    <button id="botonTirar" onclick="tirar()">🎰 GIRAR</button>
+    
+    <p id="texto-abajo">Girá la rueda y fijate si tenés premio 🎁</p>
+
+    <p id="resultado"></p>
+
+    <p id="linea">Línea directa 24 hs: 1161164088</p>
+    <p id="premios-restantes">PREMIOS RESTANTES: 71</p>
+    <p class="emojis">😎💅🏻</p>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
