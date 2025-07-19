@@ -4,65 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MARIAN MUNDO CASINO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      background: url('https://i.imgur.com/kBrqrxZ.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-      text-align: center;
+      background-color: #001f3f;
+      font-family: 'Orbitron', sans-serif;
       color: white;
+      text-align: center;
       margin: 0;
+      padding: 0;
     }
 
     h1 {
+      font-size: 32px;
+      color: #00ccff;
+      text-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
       margin-top: 30px;
-      font-size: 2.5em;
-      color: #00cfff;
-      text-shadow: 0 0 10px #00cfff;
     }
 
-    #codigo {
+    #contenedor {
+      margin: 40px auto;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 20px;
+      border: 3px solid #00ccff;
+      background-color: #001a33;
+      box-shadow: 0 0 20px #00ccff;
+    }
+
+    input[type="text"] {
       padding: 10px;
-      font-size: 1em;
-      margin-top: 20px;
-      border-radius: 5px;
-      border: none;
+      width: 80%;
+      font-size: 16px;
+      border: 2px solid #00ccff;
+      border-radius: 8px;
+      outline: none;
+      text-align: center;
     }
 
-    #botonTirar {
+    button {
       margin-top: 20px;
-      padding: 20px;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: #00cfff;
-      color: white;
-      font-size: 1.2em;
+      padding: 14px 28px;
+      font-size: 18px;
+      background-color: #00ccff;
       border: none;
+      color: black;
+      border-radius: 100px;
       cursor: pointer;
-      box-shadow: 0 0 20px #00cfff;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
     }
 
     #resultado {
-      margin-top: 25px;
-      font-size: 1.3em;
+      margin-top: 20px;
+      font-size: 20px;
+      min-height: 24px;
     }
 
-    #frase {
+    .leyenda {
+      margin-top: 15px;
+      color: #ffffffcc;
+      font-size: 16px;
+    }
+
+    #premios-restantes {
       margin-top: 30px;
-      font-size: 1.2em;
+      font-size: 18px;
       color: #ffffff;
-      text-shadow: 0 0 5px #00cfff;
     }
   </style>
 </head>
 <body>
+
   <h1>MARIAN MUNDO CASINO</h1>
-  <input type="text" id="codigo" placeholder="Ingresá tu código" />
-  <br />
-  <button id="botonTirar" onclick="tirar()">Girar</button>
-  <div id="resultado"></div>
-  <div id="frase">🎲 Girá la rueda y fijate si tenés premio 🎉</div>
+
+  <div id="contenedor">
+    <input type="text" id="codigo" placeholder="Ingresá tu código"/>
+    <br/>
+    <button id="botonTirar" onclick="tirar()">🎰 Tirar la rueda</button>
+    <div id="resultado"></div>
+    <div class="leyenda">Girá la rueda y fijate si tenés premio</div>
+    <div id="premios-restantes">Premios restantes: 71</div>
+  </div>
 
   <script>
     function tirar() {
