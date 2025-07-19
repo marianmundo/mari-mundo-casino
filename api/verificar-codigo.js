@@ -1,27 +1,38 @@
-import fs from 'fs';
-import path from 'path';
-
-const codigosPath = path.resolve('./api/codigos.json');
-const usadosPath = path.resolve('./api/usados.json');
-
 export default function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
+    return res.status(405).json({ error: "Método no permitido" });
   }
 
-  const { codigo } = req.body;
-  const codigos = JSON.parse(fs.readFileSync(codigosPath, 'utf8'));
-  const usados = JSON.parse(fs.readFileSync(usadosPath, 'utf8'));
+  const codigos = {
+    "123456": "🎁 10% de regalo",
+    "654321": "🎁 500 fichas",
+    "111222": "🚫 Sin premio, intentá en la próxima carga",
+    "333444": "🎁 2000 fichas",
+    "777888": "🚫 Sin premio, intentá en la próxima carga",
+    "999000": "🎁 20% de regalo",
+    "456789": "🚫 Sin premio, intentá en la próxima carga",
+    "789123": "🎁 100 fichas",
+    "321654": "🚫 Sin premio, intentá en la próxima carga",
+    "147258": "🎁 3000 fichas"
+  };
 
-  if (usados[codigo]) {
-    return res.json({ estado: "usado" });
+  // ⚠️ Temporal: esto no guarda los usados realmente
+  const usados = [];
+
+  const { codigo } = req.body;
+
+  if (!codigo) {
+    return res.status(400).json({ valido: false, mensaje: "⚠️ Ingresá un código." });
+  }
+
+  if (usados.includes(codigo)) {
+    return res.status(200).json({ valido: false, mensaje: "🚫 Código ya fue usado." });
   }
 
   if (codigos[codigo]) {
-    usados[codigo] = true;
-    fs.writeFileSync(usadosPath, JSON.stringify(usados, null, 2));
-    return res.json({ estado: "valido", mensaje: codigos[codigo] });
+    usados.push(codigo); // Esto no se guarda entre recargas
+    return res.status(200).json({ valido: true, mensaje: codigos[codigo] });
+  } else {
+    return res.status(200).json({ valido: false, mensaje: "❌ Código inválido. Probá con otro." });
   }
-
-  return res.json({ estado: "invalido" });
 }
