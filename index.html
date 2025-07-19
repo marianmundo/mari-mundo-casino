@@ -98,6 +98,14 @@
         return;
       }
 
+      // ✅ Revisamos si ya fue usado localmente
+      const usadosLocales = JSON.parse(localStorage.getItem("codigosUsados")) || {};
+      if (usadosLocales[codigoIngresado]) {
+        resultado.style.color = "#ffcc00";
+        resultado.innerHTML = "🚫 Ya usaste este código .";
+        return;
+      }
+
       fetch('/api/verificar-codigo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -105,13 +113,17 @@
       })
       .then(response => response.json())
       .then(data => {
-        if (data.estado === "usado") {
-          resultado.style.color = "#ffcc00";
-          resultado.innerHTML = "🚫 Este código ya fue utilizado.";
-        } else if (data.estado === "valido") {
+        if (data.estado === "valido") {
+          // ✅ Guardamos el código como usado en este navegador
+          usadosLocales[codigoIngresado] = true;
+          localStorage.setItem("codigosUsados", JSON.stringify(usadosLocales));
+
           boton.style.display = "none";
           resultado.style.color = "#00ff00";
           resultado.innerHTML = "✅ " + data.mensaje;
+        } else if (data.estado === "usado") {
+          resultado.style.color = "#ffcc00";
+          resultado.innerHTML = "🚫 Este código ya fue utilizado.";
         } else {
           resultado.style.color = "#ff3333";
           resultado.innerHTML = "❌ Código inválido. Probá con otro.";
@@ -120,7 +132,7 @@
       .catch(error => {
         console.error("Error al verificar el código:", error);
         resultado.style.color = "red";
-        resultado.innerHTML = "❌ Codigo invalido.";
+        resultado.innerHTML = "❌ Código inválido.";
       });
     }
   </script>
